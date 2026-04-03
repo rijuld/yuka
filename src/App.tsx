@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type ChangeEvent, type DragEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from 'react'
 import { recognize } from 'tesseract.js'
 import type { GeminiNutritionAnalysis } from './ingredientsModel'
 import './App.css'
@@ -21,7 +21,6 @@ function App() {
   const [isIngredientsLoading, setIsIngredientsLoading] = useState(false)
   const [geminiNutrition, setGeminiNutrition] = useState<GeminiNutritionAnalysis | null>(null)
   const [isGeminiNutritionLoading, setIsGeminiNutritionLoading] = useState(false)
-  const [uploadDragging, setUploadDragging] = useState(false)
   const [pipelinePhase, setPipelinePhase] = useState<PipelinePhase>('idle')
   /** Remount file input after reset so the same file can be chosen again. */
   const [fileInputKey, setFileInputKey] = useState(0)
@@ -215,33 +214,7 @@ function App() {
     applyImageFile(event.target.files?.[0] ?? null)
   }
 
-  const onDragOver = (e: DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
-
-  const onDragEnter = (e: DragEvent) => {
-    e.preventDefault()
-    setUploadDragging(true)
-  }
-
-  const onDragLeave = (e: DragEvent) => {
-    e.preventDefault()
-    setUploadDragging(false)
-  }
-
-  const onDrop = (e: DragEvent) => {
-    e.preventDefault()
-    setUploadDragging(false)
-    const f = e.dataTransfer.files?.[0]
-    if (f?.type.startsWith('image/')) {
-      applyImageFile(f)
-    } else {
-      setError('Please drop an image file.')
-    }
-  }
-
-  /** Back to drop zone for a new product — does not re-run the same photo. */
+  /** Back to upload for a new product — does not re-run the same photo. */
   const handleBackToDrop = () => {
     if (pipelineBusy) {
       return
@@ -370,24 +343,36 @@ function App() {
         ) : (
           <div className={`pipeline-section card-wrap pipeline-section--single ${pipelineBusy ? 'pipeline-section--current' : ''}`}>
             <section className="card card--hero card--tight">
-              <label
-                className={`upload-zone upload-zone--compact ${uploadDragging ? 'upload-zone--drag' : ''}`}
-                onDragEnter={onDragEnter}
-                onDragLeave={onDragLeave}
-                onDragOver={onDragOver}
-                onDrop={onDrop}
-              >
-                <input
-                  key={fileInputKey}
-                  type="file"
-                  accept="image/*"
-                  className="upload-input"
-                  onChange={handleFileChange}
-                />
-                <div className="upload-icon upload-icon--sm" aria-hidden />
-                <p className="upload-title">{imageFile ? 'New photo' : 'Drop or tap'}</p>
-                <p className="upload-meta">{fileSummary}</p>
-              </label>
+              <div className="upload-panel upload-panel--compact">
+                <div className="upload-icon upload-icon--sm upload-icon--camera" aria-hidden />
+                <p className="upload-title">{imageFile ? 'New photo' : 'Take a picture'}</p>
+                <p className="upload-meta">
+                  {imageFile ? fileSummary : 'Point the camera at the ingredient label.'}
+                </p>
+                <div className="upload-actions">
+                  <label className="btn btn-primary btn-block upload-file-label">
+                    <input
+                      key={`cam-${fileInputKey}`}
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      className="sr-only"
+                      onChange={handleFileChange}
+                    />
+                    Take picture
+                  </label>
+                  <label className="btn btn-ghost btn-block upload-file-label">
+                    <input
+                      key={`lib-${fileInputKey}`}
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      onChange={handleFileChange}
+                    />
+                    Choose from library
+                  </label>
+                </div>
+              </div>
               {showImagePreview ? (
                 <div className="preview-frame preview-frame--compact">
                   <img className="preview-img" src={imageUrl} alt="Label" />

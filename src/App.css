@@ -274,6 +274,8 @@
 }
 
 .card {
+  box-sizing: border-box;
+  max-width: 100%;
   background: var(--white);
   border-radius: var(--radius-card);
   padding: 1.35rem 1.25rem 1.5rem;
@@ -345,39 +347,39 @@
 }
 
 /* ——— Upload ——— */
-.upload-zone {
-  position: relative;
+.upload-panel {
+  box-sizing: border-box;
   display: block;
-  padding: 2rem 1.25rem;
-  margin-bottom: 1.1rem;
-  border: 2px dashed var(--border-strong);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 1.25rem 1rem 1.35rem;
+  margin-bottom: 0.5rem;
   border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
   background: var(--cream);
-  cursor: pointer;
   text-align: center;
-  transition:
-    border-color var(--dur-standard) var(--ease-standard),
-    background var(--dur-standard) var(--ease-standard),
-    transform var(--dur-fast) var(--ease-bounce);
 }
 
-.upload-zone:hover,
-.upload-zone:focus-within {
-  border-color: var(--tasty-coral);
-  background: #fff5f0;
+.upload-actions {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
-.upload-zone--drag {
-  border-color: var(--tasty-coral);
-  background: #fff0e8;
-  transform: scale(1.01);
-}
-
-.upload-input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
+.upload-file-label {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  text-align: center;
 }
 
 .upload-icon {
@@ -469,6 +471,7 @@
 }
 
 .btn {
+  box-sizing: border-box;
   appearance: none;
   font-family: var(--font-ui);
   font-size: var(--font-size-body);
@@ -477,6 +480,7 @@
   border-radius: var(--radius-button);
   border: 2px solid transparent;
   cursor: pointer;
+  max-width: 100%;
   transition:
     transform var(--dur-fast) var(--ease-standard),
     box-shadow var(--dur-fast) var(--ease-standard),
@@ -717,6 +721,8 @@
 }
 
 .pipeline-section {
+  box-sizing: border-box;
+  min-width: 0;
   border-radius: calc(var(--radius-card) + 6px);
   padding: 3px;
   transition:
@@ -799,15 +805,21 @@
   margin-bottom: 0.65rem;
 }
 
-.upload-zone--compact {
-  padding: 1.1rem 0.9rem;
-  margin-bottom: 0.5rem;
+.upload-panel--compact {
+  padding: 1rem 0.85rem 1.1rem;
 }
 
 .upload-icon--sm {
   width: 36px;
   height: 36px;
   margin-bottom: 0.45rem;
+}
+
+.upload-icon--camera {
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zm7-7h-2.2l-1.8-2.2h-6l-1.8 2.2H5c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E")
+    center / 26px 26px no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zm7-7h-2.2l-1.8-2.2h-6l-1.8 2.2H5c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2z'/%3E%3C/svg%3E")
+    center / 26px 26px no-repeat;
 }
 
 .preview-frame--compact {
